@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Knowledge Assessment Quiz</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <div class="quiz-header">
+            <h1>Knowledge Assessment Quiz</h1>
+            <p>Test your knowledge across various subjects</p>
+        </div>
+
+        <div class="progress-container">
+            <div class="progress-bar">
+                <div class="progress-fill" id="progress"></div>
+            </div>
+            <div style="display: flex; justify-content: space-between; margin-top: 0.5rem;">
+                <span>Question <span id="current-question">1</span> of <span id="total-questions">15</span></span>
+                <span>Score: <span id="score">0</span></span>
+            </div>
+        </div>
+
+        <div id="quiz">
+            <!-- Questions will be dynamically inserted here -->
+        </div>
+
+        <div id="results" class="results-container">
+            <h2>Quiz Complete!</h2>
+            <div class="score-display">
+                Your Score: <span id="final-score">0</span>/<span id="max-score">15</span>
+            </div>
+            <div class="category-breakdown" id="category-scores">
+                <!-- Category scores will be inserted here -->
+            </div>
+            <button onclick="restartQuiz()">Try Again</button>
+        </div>
+    </div>
+
+    <div class="floating-info">
+        <i class="fas fa-info-circle"></i>
+        <div>
+            <p>Click an option to answer</p>
+            <p>Use keyboard numbers 1-4 to select answers</p>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html> 
