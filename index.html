@@ -3,9 +3,360 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Test your knowledge across various subjects with this interactive quiz covering Geography, Chemistry, History, Literature, Astronomy, Psychology, and more.">
+    <meta name="keywords" content="quiz, knowledge test, educational quiz, trivia, learning">
+    <meta name="author" content="Knowledge Assessment Quiz">
+    <meta name="theme-color" content="#2c3e50">
+    <script>
+        if (!('themeColor' in document.documentElement.style)) {
+            document.documentElement.style.setProperty('--primary-color', '#2c3e50');
+        }
+    </script>
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://yourdomain.com/">
+    <meta property="og:title" content="Knowledge Assessment Quiz">
+    <meta property="og:description" content="Test your knowledge across various subjects with this interactive quiz.">
+    <meta property="og:image" content="https://yourdomain.com/quiz-preview.jpg">
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://yourdomain.com/">
+    <meta property="twitter:title" content="Knowledge Assessment Quiz">
+    <meta property="twitter:description" content="Test your knowledge across various subjects with this interactive quiz.">
+    <meta property="twitter:image" content="https://yourdomain.com/quiz-preview.jpg">
+
+    <!-- PWA Support -->
+    <link rel="manifest" href="manifest.json">
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-title" content="Knowledge Quiz">
+
+    <link rel="apple-touch-icon" href="favicon.ico">
     <title>Knowledge Assessment Quiz</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <link rel="stylesheet" href="styles.css">
+    <style>
+        :root {
+            --primary-color: #2c3e50;
+            --secondary-color: #3498db;
+            --success-color: #2ecc71;
+            --warning-color: #f1c40f;
+            --danger-color: #e74c3c;
+            --light-bg: #f5f5f5;
+            --dark-bg: #2c3e50;
+            --text-color: #333;
+            --light-text: #fff;
+            --border-radius: 8px;
+            --shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s ease;
+            --focus-outline: 3px solid #3498db;
+        }
+
+        /* Accessibility and Reset Improvements */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        /* Improved focus styles for accessibility */
+        *:focus {
+            outline: var(--focus-outline);
+            outline-offset: 2px;
+        }
+
+        /* Remove focus for mouse users, keep for keyboard */
+        *:focus:not(:focus-visible) {
+            outline: none;
+        }
+
+        *:focus-visible {
+            outline: var(--focus-outline);
+            outline-offset: 2px;
+        }
+
+        /* Smooth scrolling for the whole page */
+        html {
+            scroll-behavior: smooth;
+            -webkit-text-size-adjust: 100%;
+            -moz-text-size-adjust: 100%;
+            -ms-text-size-adjust: 100%;
+            text-size-adjust: 100%;
+        }
+
+        body {
+            background-color: var(--light-bg);
+            color: var(--text-color);
+            line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden;
+        }
+
+        /* Improved container styles */
+        .container {
+            max-width: 800px;
+            width: 95%;
+            margin: 2rem auto;
+            padding: 2rem;
+            background: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+        }
+
+        /* Enhanced button styles */
+        button {
+            padding: 0.8rem 1.5rem;
+            border: none;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            font-size: 1rem;
+            transition: var(--transition);
+            background-color: var(--secondary-color);
+            color: white;
+            position: relative;
+            overflow: hidden;
+            transform: translateZ(0);
+        }
+
+        button:hover {
+            opacity: 0.9;
+            transform: translateY(-1px);
+        }
+
+        button:active {
+            transform: translateY(1px);
+        }
+
+        button::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 5px;
+            height: 5px;
+            background: rgba(255, 255, 255, 0.5);
+            opacity: 0;
+            border-radius: 100%;
+            transform: scale(1, 1) translate(-50%);
+            transform-origin: 50% 50%;
+        }
+
+        button:focus:not(:active)::after {
+            animation: ripple 1s ease-out;
+        }
+
+        @keyframes ripple {
+            0% {
+                transform: scale(0, 0);
+                opacity: 0.5;
+            }
+            100% {
+                transform: scale(100, 100);
+                opacity: 0;
+            }
+        }
+
+        /* Enhanced option styles */
+        .option {
+            padding: 1rem;
+            background-color: var(--light-bg);
+            border: 2px solid transparent;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .option:hover {
+            background-color: #e9ecef;
+            border-color: var(--secondary-color);
+            transform: translateY(-2px);
+        }
+
+        .option.selected {
+            background-color: var(--secondary-color);
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        .option.correct {
+            background-color: var(--success-color);
+            color: white;
+            animation: correctAnswer 0.5s ease-out;
+        }
+
+        .option.incorrect {
+            background-color: var(--danger-color);
+            color: white;
+            animation: incorrectAnswer 0.5s ease-out;
+        }
+
+        @keyframes correctAnswer {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        @keyframes incorrectAnswer {
+            0%, 100% { transform: translateX(0); }
+            20%, 60% { transform: translateX(-5px); }
+            40%, 80% { transform: translateX(5px); }
+        }
+
+        /* Loading state */
+        .loading {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.9);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .loading::after {
+            content: '';
+            width: 50px;
+            height: 50px;
+            border: 5px solid var(--light-bg);
+            border-top-color: var(--secondary-color);
+            border-radius: 50%;
+            animation: loading 1s ease-in-out infinite;
+        }
+
+        @keyframes loading {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Enhanced progress bar */
+        .progress-bar {
+            height: 8px;
+            background-color: var(--light-bg);
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            position: relative;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background-color: var(--secondary-color);
+            width: 0%;
+            transition: width 0.5s ease;
+            position: relative;
+        }
+
+        .progress-fill::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(
+                90deg,
+                rgba(255, 255, 255, 0) 0%,
+                rgba(255, 255, 255, 0.2) 50%,
+                rgba(255, 255, 255, 0) 100%
+            );
+            animation: shimmer 2s infinite;
+        }
+
+        @keyframes shimmer {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+
+        /* Enhanced results display */
+        .results-container {
+            text-align: center;
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .category-score {
+            background-color: var(--light-bg);
+            padding: 1rem;
+            border-radius: var(--border-radius);
+            transition: var(--transition);
+        }
+
+        .category-score:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow);
+        }
+
+        /* Responsive improvements */
+        @media (max-width: 768px) {
+            .container {
+                margin: 1rem;
+                padding: 1rem;
+                width: calc(100% - 2rem);
+            }
+
+            .question-card {
+                padding: 1rem;
+            }
+
+            .floating-info {
+                display: none;
+            }
+
+            button {
+                padding: 0.6rem 1.2rem;
+                font-size: 0.9rem;
+            }
+
+            .option {
+                padding: 0.8rem;
+            }
+        }
+
+        /* Print styles */
+        @media print {
+            body {
+                background: white;
+            }
+
+            .container {
+                box-shadow: none;
+                margin: 0;
+                padding: 1rem;
+            }
+
+            .floating-info,
+            button:not(.print-results) {
+                display: none;
+            }
+        }
+
+        /* High contrast mode */
+        @media (prefers-contrast: high) {
+            :root {
+                --primary-color: #000000;
+                --secondary-color: #0000EE;
+                --success-color: #006400;
+                --warning-color: #B8860B;
+                --danger-color: #8B0000;
+                --light-bg: #FFFFFF;
+                --text-color: #000000;
+                --shadow: none;
+            }
+        }
+    </style>
 </head>
 <body>
     <div class="container">
@@ -48,6 +399,425 @@
         </div>
     </div>
 
-    <script src="script.js"></script>
+    <script>
+        // Quiz data
+        const questions = [
+            {
+                question: "What is the longest river in the world?",
+                options: ["Nile", "Amazon", "Yangtze", "Mississippi"],
+                correct: 0,
+                category: "Geography",
+                difficulty: 2
+            },
+            {
+                question: "What is the most abundant element in the universe?",
+                options: ["Hydrogen", "Helium", "Oxygen", "Carbon"],
+                correct: 0,
+                category: "Chemistry",
+                difficulty: 2
+            },
+            {
+                question: "Who painted the Mona Lisa?",
+                options: ["Leonardo da Vinci", "Vincent van Gogh", "Pablo Picasso", "Michelangelo"],
+                correct: 0,
+                category: "History",
+                difficulty: 0
+            },
+            {
+                question: "Who wrote '1984'?",
+                options: ["George Orwell", "Charles Dickens", "Voltaire", "Augustus Fitch"],
+                correct: 0,
+                category: "Literature",
+                difficulty: 1
+            },
+            {
+                question: "Which planet is known as the Red Planet?",
+                options: ["Mars", "Saturn", "Jupiter", "Mercury"],
+                correct: 0,
+                category: "Astronomy",
+                difficulty: 0
+            },
+            {
+                question: "What is the capital of Australia?",
+                options: ["Canberra", "Sydney", "Perth", "Melbourne"],
+                correct: 0,
+                category: "Geography",
+                difficulty: 1
+            },
+            {
+                question: "What is the chemical symbol for gold?",
+                options: ["Au", "Ti", "Se", "Go"],
+                correct: 0,
+                category: "Chemistry",
+                difficulty: 1
+            },
+            {
+                question: "Who proposed the heliocentric model of the solar system?",
+                options: ["Nicolaus Copernicus", "Galileo Galilei", "Johannes Kepler", "Tycho Brahe"],
+                correct: 0,
+                category: "Astronomy",
+                difficulty: 2
+            },
+            {
+                question: "What is the present largest mammal?",
+                options: ["Blue Whale", "Giant-Squid", "Whale Shark", "Hippopotamus"],
+                correct: 0,
+                category: "General",
+                difficulty: 0
+            },
+            {
+                question: "What is the chemical formula for sulfuric acid?",
+                options: ["H2SO4", "HCI", "NaOH", "CH3COOH"],
+                correct: 0,
+                category: "Chemistry",
+                difficulty: 2
+            },
+            {
+                question: "What is the Smallest Prime Number?",
+                options: ["2", "3", "1.5", "5"],
+                correct: 0,
+                category: "Math",
+                difficulty: 2
+            },
+            {
+                question: "Who founded psychoanalysis?",
+                options: ["Sigmund Freud", "Carl Jung", "B.F. Skinner", "William James"],
+                correct: 0,
+                category: "Psychology",
+                difficulty: 1
+            },
+            {
+                question: "What is classical conditioning?",
+                options: ["Learning through association", "Complex Thinking", "Direct Learning", "Problem Solving"],
+                correct: 0,
+                category: "Psychology",
+                difficulty: 1
+            },
+            {
+                question: "What is metacognition?",
+                options: ["Thinking about thinking", "Basic Thought", "Memory Recall", "Problem Solving"],
+                correct: 0,
+                category: "Psych",
+                difficulty: 2
+            },
+            {
+                question: "What is alexithymia?",
+                options: ["Cannot properly identify emotions", "Memory Disorder", "Learning Disability", "Attention Deficit"],
+                correct: 0,
+                category: "Psych",
+                difficulty: 2
+            }
+        ];
+
+        // State management
+        const state = {
+            currentQuestionIndex: 0,
+            score: 0,
+            answeredQuestions: new Set(),
+            isLoading: false
+        };
+
+        // DOM Elements cache
+        const elements = {
+            quiz: document.getElementById('quiz'),
+            progress: document.getElementById('progress'),
+            currentQuestion: document.getElementById('current-question'),
+            totalQuestions: document.getElementById('total-questions'),
+            score: document.getElementById('score'),
+            results: document.getElementById('results'),
+            finalScore: document.getElementById('final-score'),
+            maxScore: document.getElementById('max-score'),
+            categoryScores: document.getElementById('category-scores')
+        };
+
+        // Loading indicator
+        function showLoading() {
+            state.isLoading = true;
+            const loader = document.createElement('div');
+            loader.className = 'loading';
+            document.body.appendChild(loader);
+        }
+
+        function hideLoading() {
+            state.isLoading = false;
+            const loader = document.querySelector('.loading');
+            if (loader) {
+                loader.remove();
+            }
+        }
+
+        // Error handling
+        function handleError(error) {
+            console.error('Quiz Error:', error);
+            const errorMessage = document.createElement('div');
+            errorMessage.className = 'error-message';
+            errorMessage.innerHTML = `
+                <div class="error-content">
+                    <i class="fas fa-exclamation-circle"></i>
+                    <p>Something went wrong. Please try refreshing the page.</p>
+                    <button onclick="location.reload()">Refresh</button>
+                </div>
+            `;
+            document.body.appendChild(errorMessage);
+        }
+
+        // Enhanced question display with animation
+        async function displayQuestion() {
+            try {
+                showLoading();
+                const question = questions[state.currentQuestionIndex];
+                
+                const questionHTML = `
+                    <div class="question-card" style="opacity: 0; transform: translateY(20px);">
+                        <div class="question-header">
+                            <span class="category-badge">${question.category}</span>
+                            <div class="difficulty">
+                                ${Array(3).fill(0).map((_, i) => 
+                                    `<span class="difficulty-dot ${i <= question.difficulty ? 'active' : ''}"></span>`
+                                ).join('')}
+                            </div>
+                        </div>
+                        <div class="question-text">${question.question}</div>
+                        <div class="options-grid">
+                            ${question.options.map((option, index) => `
+                                <div class="option" 
+                                    data-index="${index}" 
+                                    role="button"
+                                    tabindex="0"
+                                    aria-label="Option ${index + 1}: ${option}"
+                                    onclick="selectOption(${index})"
+                                    onkeypress="if(event.key === 'Enter') selectOption(${index})">
+                                    ${option}
+                                </div>
+                            `).join('')}
+                        </div>
+                        <div class="controls">
+                            <button onclick="previousQuestion()" 
+                                ${state.currentQuestionIndex === 0 ? 'disabled' : ''}
+                                aria-label="Previous question">
+                                <i class="fas fa-arrow-left"></i> Previous
+                            </button>
+                            <button onclick="nextQuestion()" 
+                                ${!state.answeredQuestions.has(state.currentQuestionIndex) ? 'disabled' : ''}
+                                aria-label="${state.currentQuestionIndex === questions.length - 1 ? 'Finish quiz' : 'Next question'}">
+                                ${state.currentQuestionIndex === questions.length - 1 ? 'Finish' : 'Next'} 
+                                <i class="fas fa-arrow-right"></i>
+                            </button>
+                        </div>
+                    </div>
+                `;
+                
+                elements.quiz.innerHTML = questionHTML;
+                
+                // Animate question card
+                await new Promise(resolve => setTimeout(resolve, 50));
+                const card = elements.quiz.querySelector('.question-card');
+                card.style.transition = 'all 0.5s ease';
+                card.style.opacity = '1';
+                card.style.transform = 'translateY(0)';
+                
+                updateProgress();
+                hideLoading();
+            } catch (error) {
+                handleError(error);
+            }
+        }
+
+        // Enhanced option selection with feedback
+        function selectOption(optionIndex) {
+            if (state.answeredQuestions.has(state.currentQuestionIndex)) return;
+
+            const options = document.querySelectorAll('.option');
+            const currentQuestion = questions[state.currentQuestionIndex];
+            
+            options.forEach(option => {
+                option.classList.remove('selected');
+                option.setAttribute('aria-selected', 'false');
+            });
+            
+            options[optionIndex].classList.add('selected');
+            options[optionIndex].setAttribute('aria-selected', 'true');
+            
+            // Play sound effect
+            const sound = new Audio(optionIndex === currentQuestion.correct ? 
+                'data:audio/mp3;base64,SUQzBAAAAAAAI1RTU0UAAAAPAAADTGF2ZjU4LjI5LjEwMAAAAAAAAAAAAAAA//tQwAAAAAAAAAAAAAAAAAAAAAAASW5mbwAAAA8AAAADAAAGhgBVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVWqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqr///////////////////////////////////////////8AAAAATGF2YzU4LjU0AAAAAAAAAAAAAAAAJAAAAAAAAAAAAYbsYZqUAAAAAAAAAAAAAAAAAAAA//sQxAADwAABpAAAACAAADSAAAAETEFNRTMuMTAwVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV//sQxBmAEAGkYAAAQgAAA0gAAABFVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVU=' :
+                'data:audio/mp3;base64,SUQzBAAAAAAAI1RTU0UAAAAPAAADTGF2ZjU4LjI5LjEwMAAAAAAAAAAAAAAA//tQwAAAAAAAAAAAAAAAAAAAAAAASW5mbwAAAA8AAAADAAAGhgBVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVWqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqr///////////////////////////////////////////8AAAAATGF2YzU4LjU0AAAAAAAAAAAAAAAAJAAAAAAAAAAAAYbsYZqUAAAAAAAAAAAAAAAAAAAA//sQxAADwAABpAAAACAAADSAAAAETEFNRTMuMTAwVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV//sQxBmAEAGkYAAAQgAAA0gAAABFVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVU=');
+            sound.volume = 0.2;
+            sound.play().catch(() => {}); // Ignore errors if audio can't play
+            
+            setTimeout(() => {
+                options[currentQuestion.correct].classList.add('correct');
+                if (optionIndex !== currentQuestion.correct) {
+                    options[optionIndex].classList.add('incorrect');
+                } else {
+                    state.score++;
+                    elements.score.textContent = state.score;
+                }
+                
+                state.answeredQuestions.add(state.currentQuestionIndex);
+                document.querySelector('.controls button:last-child').disabled = false;
+                
+                // Add answer explanation if available
+                if (currentQuestion.explanation) {
+                    const explanationDiv = document.createElement('div');
+                    explanationDiv.className = 'explanation';
+                    explanationDiv.innerHTML = `
+                        <div class="explanation-content">
+                            <i class="fas fa-info-circle"></i>
+                            <p>${currentQuestion.explanation}</p>
+                        </div>
+                    `;
+                    options[options.length - 1].insertAdjacentElement('afterend', explanationDiv);
+                }
+            }, 500);
+        }
+
+        // Enhanced progress tracking
+        function updateProgress() {
+            const progress = ((state.currentQuestionIndex) / questions.length) * 100;
+            elements.progress.style.width = `${progress}%`;
+            elements.currentQuestion.textContent = state.currentQuestionIndex + 1;
+            elements.totalQuestions.textContent = questions.length;
+            
+            // Update page title
+            document.title = `Question ${state.currentQuestionIndex + 1}/${questions.length} - Knowledge Quiz`;
+        }
+
+        function previousQuestion() {
+            if (state.currentQuestionIndex > 0) {
+                state.currentQuestionIndex--;
+                displayQuestion();
+            }
+        }
+
+        function nextQuestion() {
+            if (state.currentQuestionIndex < questions.length - 1) {
+                state.currentQuestionIndex++;
+                displayQuestion();
+            } else {
+                showResults();
+            }
+        }
+
+        // Enhanced results display
+        function showResults() {
+            elements.quiz.style.display = 'none';
+            elements.results.style.display = 'block';
+            elements.finalScore.textContent = state.score;
+            elements.maxScore.textContent = questions.length;
+
+            // Calculate category scores with animations
+            const categoryScores = {};
+            questions.forEach((q, index) => {
+                if (!categoryScores[q.category]) {
+                    categoryScores[q.category] = { correct: 0, total: 0 };
+                }
+                categoryScores[q.category].total++;
+                if (state.answeredQuestions.has(index) && 
+                    questions[index].correct === Array.from(document.querySelectorAll('.option'))
+                        .findIndex(opt => opt.classList.contains('selected'))) {
+                    categoryScores[q.category].correct++;
+                }
+            });
+
+            elements.categoryScores.innerHTML = Object.entries(categoryScores)
+                .map(([category, scores], index) => `
+                    <div class="category-score" style="animation: fadeIn 0.5s ease-out ${index * 0.1}s forwards">
+                        <h3>${category}</h3>
+                        <div class="score-bar">
+                            <div class="score-fill" style="width: ${(scores.correct / scores.total) * 100}%">
+                                ${scores.correct}/${scores.total} correct
+                            </div>
+                        </div>
+                    </div>
+                `).join('');
+
+            // Update page title
+            document.title = `Quiz Complete! Score: ${state.score}/${questions.length} - Knowledge Quiz`;
+            
+            // Save results to localStorage
+            try {
+                const previousResults = JSON.parse(localStorage.getItem('quizResults') || '[]');
+                previousResults.push({
+                    date: new Date().toISOString(),
+                    score: state.score,
+                    total: questions.length,
+                    categoryScores
+                });
+                localStorage.setItem('quizResults', JSON.stringify(previousResults));
+            } catch (error) {
+                console.error('Failed to save results:', error);
+            }
+        }
+
+        function restartQuiz() {
+            state.currentQuestionIndex = 0;
+            state.score = 0;
+            state.answeredQuestions = new Set();
+            elements.score.textContent = '0';
+            elements.quiz.style.display = 'block';
+            elements.results.style.display = 'none';
+            document.title = 'Knowledge Assessment Quiz';
+            displayQuestion();
+        }
+
+        // Enhanced keyboard navigation
+        document.addEventListener('keydown', (e) => {
+            if (e.key >= '1' && e.key <= '4') {
+                const optionIndex = parseInt(e.key) - 1;
+                if (optionIndex < questions[state.currentQuestionIndex].options.length) {
+                    selectOption(optionIndex);
+                }
+            } else if (e.key === 'ArrowLeft') {
+                previousQuestion();
+            } else if (e.key === 'ArrowRight' && !document.querySelector('.controls button:last-child').disabled) {
+                nextQuestion();
+            }
+        });
+
+        // Service Worker registration for offline support
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/sw.js').catch(error => {
+                    console.error('ServiceWorker registration failed:', error);
+                });
+            });
+        }
+
+        // Initialize quiz
+        document.addEventListener('DOMContentLoaded', () => {
+            elements.totalQuestions.textContent = questions.length;
+            displayQuestion();
+        });
+
+        // Handle visibility change
+        document.addEventListener('visibilitychange', () => {
+            if (document.hidden) {
+                // Save progress
+                try {
+                    localStorage.setItem('quizProgress', JSON.stringify({
+                        currentQuestionIndex: state.currentQuestionIndex,
+                        score: state.score,
+                        answeredQuestions: Array.from(state.answeredQuestions)
+                    }));
+                } catch (error) {
+                    console.error('Failed to save progress:', error);
+                }
+            }
+        });
+
+        // Restore progress if available
+        try {
+            const savedProgress = JSON.parse(localStorage.getItem('quizProgress'));
+            if (savedProgress) {
+                state.currentQuestionIndex = savedProgress.currentQuestionIndex;
+                state.score = savedProgress.score;
+                state.answeredQuestions = new Set(savedProgress.answeredQuestions);
+                elements.score.textContent = state.score;
+            }
+        } catch (error) {
+            console.error('Failed to restore progress:', error);
+        }
+    </script>
 </body>
-</html> 
+</html>
